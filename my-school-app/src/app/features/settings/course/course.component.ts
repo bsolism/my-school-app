@@ -39,8 +39,12 @@ export class CourseComponent extends FormBaseComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.getInitData();
+    
+  }
+
+  getInitData():void{
     this._service.getCourses().then(res=>{
-      console.log(res);
       this.coursesSource = res.data;
     })   
   }
@@ -62,21 +66,23 @@ export class CourseComponent extends FormBaseComponent implements OnInit {
     // this._alert.loading('Procesando...')
     
     console.log(course);
-    // const promise = course.id===0 ? this._service.addCourse(course)
-    //           : this._service.updateCourse(course);
+    const promise = course.id===0 ? this._service.addCourse(course)
+              : this._service.updateCourse(course);  
     
-    // await promise.then(res=>{
-    //   if(course.id === 0){
-    //     this.coursesSource.push(res.data);
-    //   }else{
-    //     this.coursesSource = this.coursesSource.map(item => 
-    //       item.id === course.id ? res.data : item
-    //     )
-    //   }
-    //   this._alert.close();
+    await promise.then(res=>{
+      console.log(res);
+      this.getInitData();
+      // if(course.id === 0){
+      //   this.coursesSource.push(res.data);
+      // }else{
+      //   this.coursesSource = this.coursesSource.map(item => 
+      //     item.id === course.id ? res.data : item
+      //   )
+      // }
+      this._alert.close();
         
-    //   this.resetForm();
-    // })   
+      this.resetForm();
+    })   
   }
   resetForm():void{
     this.hasPreviewCourse = false;

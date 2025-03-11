@@ -153,14 +153,15 @@ export class AlumnScreenFormComponent extends FormBaseComponent implements OnIni
 
   async loadLocationData(countryName?: string, stateName?: string) {
     const countryId = this.countries.find(x => x.name === countryName)?.id ?? 0;
-    const states = await this.service.getStatesByCountryId(countryId).then(res => res.data);
+    const states = await this.service.getStatesByCountryId(countryId).then(res => res);
     const stateId = states.find(x => x.name === stateName)?.id ?? 0;
-    const cities = await this.service.getCityByStateId(stateId).then(res => res.data);
+    const cities = await this.service.getCityByStateId(stateId).then(res => res);
     return { states, cities };
   }
 
   async onGetCountries(): Promise<void>{
-    this.countries = (await this.service.getCountries()).data
+    this.countries = await this.service.getCountries()
+    console.log(this.countries);
   }
 
   async onValueSelected(event:any, field:string){
@@ -221,23 +222,25 @@ export class AlumnScreenFormComponent extends FormBaseComponent implements OnIni
 
   private async getStatesByCountryId(idCountry: number, targetArray: keyof typeof this.context): Promise<void> {
     const res = await this.service.getStatesByCountryId(idCountry);  
-    this.context[targetArray] = res.data;  
+    console.log(res);
+    this.context[targetArray] = res;  
 
     if (targetArray === 'states') {
-      this.states = res.data;  
+      this.states = res;  
     } else if (targetArray === 'currentStates') {
-      this.currentStates = res.data;  
+      this.currentStates = res;  
     }
     this.cdr.detectChanges();
   }
 
   private async getCiyByStateId(idState: number, targetArray: keyof typeof this.context): Promise<void> {
     const res = await this.service.getCityByStateId(idState);
-    this.context[targetArray] = res.data;
+    console.log(res);
+    this.context[targetArray] = res;
     if (targetArray === 'cities') {
-      this.cities = res.data;  
+      this.cities = res;  
     } else if (targetArray === 'currentCities') {
-      this.currentCities = res.data;  
+      this.currentCities = res;  
     }
     this.cdr.detectChanges();  
   }
@@ -256,16 +259,15 @@ export class AlumnScreenFormComponent extends FormBaseComponent implements OnIni
 
   Columns:any[] = [
     { dataField: 'fullName', caption: 'Nombre'},
-    { dataField: 'dni', caption: 'Identidad',width: 150,
+    { dataField: 'dni', caption: 'Identidad',
       editorOptions:{ type: 'mask', mask: '0000-0000-00000', useMaskedValue: true }
      },
-    { dataField: 'phone', caption: 'Telefono', width:150,
+    { dataField: 'phone', caption: 'Telefono',
       editorOptions:{ type: 'mask', mask: '(+000) 0000-0000', useMaskedValue: true }
     },
     {
       dataField: 'email',
       caption: 'Correo',
-      width: 200,
       validationRules: [
         { type: 'required', message: 'El correo es obligatorio' },
         { type: 'email', message: 'El formato del correo no es válido' }
@@ -274,7 +276,6 @@ export class AlumnScreenFormComponent extends FormBaseComponent implements OnIni
     {
       dataField: 'parent',
       caption: 'Parentesco',
-      width: 150,
       lookup: {
         dataSource: this.parents, 
         valueExpr: 'this', 

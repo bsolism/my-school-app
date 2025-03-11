@@ -6,6 +6,7 @@ import * as events from 'devextreme/events';
 import { MenuService } from '../../services/menu.service';
 import { Menu } from '../../interfaces/menu.interface';
 import { AlertService } from '../../services/alert.service';
+import { UserStoreService } from '../../services/user-store.service';
 
 @Component({
   selector: 'app-side-navigation',
@@ -48,7 +49,8 @@ export class SideNavigationComponent {
   //   return this._items;
   // }
 
-  constructor(private elementRef: ElementRef, private service: MenuService, private _alert:AlertService) {
+  constructor(private elementRef: ElementRef, private service: MenuService, 
+    private _alert:AlertService, private userStore: UserStoreService) {
     const home ={
       text: 'Home',
       path: '/home',
@@ -60,10 +62,15 @@ export class SideNavigationComponent {
 
   private async loadMenu() {
     try {
+
+      console.log(this.userStore.getUser());
+      
+
       this._alert.loading('Cargando...')
-      const response = await this.service.getMenus();      
+      // const response = await this.service.getMenus();      
+      const response = await this.userStore.getUser();      
       console.log(response);
-      const menu = this.convertToNavigation(response.data)
+      const menu = this.convertToNavigation(response?.menus || []);
       this.navigation.push(...menu);
       console.log(this.navigation);
       this.items = this.navigation.map((item) => ({
@@ -98,10 +105,10 @@ export class SideNavigationComponent {
 
   private convertToNavigation(input: any[]): Menu[] {
     return input.map(item => ({
-      text: item.name,   // Cambia 'name' por 'text'
-      path: item.path ? `/${item.path}` : '',   // Formatea 'path' como string
-      icon: item.icon, // Mantén el 'icon'
-      items: item.subMenu && item.subMenu.length > 0 ? this.convertToNavigation(item.subMenu) : [] // Recursión para submenús
+      text: item.Name,   // Cambia 'name' por 'text'
+      path: item.Path ? `/${item.Path}` : '',   // Formatea 'path' como string
+      icon: item.Icon, // Mantén el 'icon'
+      items: item.SubMenu && item.SubMenu.length > 0 ? this.convertToNavigation(item.SubMenu) : [] // Recursión para submenús
     }));
   }
 
