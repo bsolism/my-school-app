@@ -27,19 +27,19 @@ export class RegisterService {
     return lastValueFrom(this.httpClient.get<Response<Array<AlumnoMatricula>>>(uri));
   }
 
-  getCountries(): Promise<Response<Array<Country>>>{
+  getCountries(): Promise<Array<Country>>{
     const uri = `${webApi.locationApi}/country/countries`;
-    return lastValueFrom(this.httpClient.get<Response<Array<Country>>>(uri));
+    return lastValueFrom(this.httpClient.get<Array<Country>>(uri));
   }
 
-  getStatesByCountryId(idCountry: number): Promise<Response<Array<State>>>{
+  getStatesByCountryId(idCountry: number): Promise<Array<State>>{
     const uri = `${webApi.locationApi}/state/by-countryid?countryId=${idCountry}`;
-    return lastValueFrom(this.httpClient.get<Response<Array<State>>>(uri));
+    return lastValueFrom(this.httpClient.get<Array<State>>(uri));
   }
 
-  getCityByStateId(idState: number): Promise<Response<Array<City>>>{
-    const uri = `${webApi.locationApi}/cities/by-stateid?stateId=${idState}`;
-    return lastValueFrom(this.httpClient.get<Response<Array<City>>>(uri));
+  getCityByStateId(idState: number): Promise<Array<City>>{
+    const uri = `${webApi.locationApi}/city/by-stateid?stateId=${idState}`;
+    return lastValueFrom(this.httpClient.get<Array<City>>(uri));
   }
 
   getAlumnById(id: number): Promise<Response<Alumno>>{

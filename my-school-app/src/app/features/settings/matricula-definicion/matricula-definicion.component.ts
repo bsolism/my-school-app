@@ -90,6 +90,8 @@ export class MatriculaDefinicionComponent extends FormBaseComponent implements O
     }
     this.matriculaForm.patchValue({grados : this.setDataSourseCursos});
     const data = this.matriculaForm.value;
+
+    console.log(data);
     
     const promise = data.id === 0? this.cursoService.postMatricula(data):
     this.cursoService.putMatricula(data);
@@ -112,6 +114,7 @@ export class MatriculaDefinicionComponent extends FormBaseComponent implements O
     this._alert.loading("Cargando...")
     await this.cursoService.getMatriculaDefinicion(this.yearSearch).then(res=>{
       const data = res.data;
+      console.log(res);
       this.matriculaForm.patchValue({
         id:data.id, 
         name: data.name,

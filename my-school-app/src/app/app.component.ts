@@ -1,18 +1,18 @@
 import { Component, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './shared/components/header/header.component';
+import { RouterModule } from '@angular/router';
 import { SideNavComponent } from './layouts/side-nav/side-nav.component';
 import { AppInfoService } from './shared/services/app-info.service';
 import { AuthService } from './shared/services/auth.service';
 import { ScreenService } from './shared/services/screen.service';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from '../auth/login/login.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, SideNavComponent, FooterComponent, HttpClientModule, RouterModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
