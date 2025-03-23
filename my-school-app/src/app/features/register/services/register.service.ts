@@ -64,4 +64,19 @@ export class RegisterService {
     const uri = `${webApi.application}/matricula/alumno`;
     return lastValueFrom(this.httpClient.post<any>(uri,matricula));
   }
+
+  postTransporteAlumno(transporte: any): Promise<any>{
+    const uri = `${webApi.application}/transport`;
+    return lastValueFrom(this.httpClient.post<any>(uri,transporte));
+  }
+
+  putTransporteAlumno(transporte: any): Promise<any>{
+    const uri = `${webApi.application}/transport`;
+    return lastValueFrom(this.httpClient.put<any>(uri,transporte));
+  }
+
+  getTransporteAlumno(): Promise<any>{
+    const uri = `${webApi.application}/transport`;
+    return lastValueFrom(this.httpClient.get<any>(uri));
+  }
 }
