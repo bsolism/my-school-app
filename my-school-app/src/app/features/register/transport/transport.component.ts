@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, inject, Input, OnInit } from '@angular/core';
 import { AppContainerComponent } from '../../../layouts/app-container/app-container.component';
 import {
   DxDataGridModule,
@@ -72,6 +72,8 @@ export class TransportComponent implements OnInit  {
    lat: number = DEFAULT_LAT;
    lon: number = DEFAULT_LON;
   alumns: Alumno[] = [];
+  popupWidth: number = 560;
+  popupHeight: number = 560;
 
   customCurrencyFormat = {
     type: 'currency',
@@ -103,6 +105,30 @@ export class TransportComponent implements OnInit  {
     this.getDataGrid();
    await this._alert.close();
     
+  }
+
+  @HostListener('window:resize', ['$event'])
+    onResize(event: Event) {
+    this.initializePopupSize();
+  }
+
+  // Método para establecer el tamaño del popup según el tamaño de pantalla
+  initializePopupSize() {
+    const screenWidth = window.innerWidth;
+    
+    if (screenWidth <= 576) {
+      // Móviles pequeños
+      this.popupWidth = screenWidth * 0.95;
+      this.popupHeight = 480;
+    } else if (screenWidth <= 768) {
+      // Tablets y móviles grandes
+      this.popupWidth = screenWidth * 0.8;
+      this.popupHeight = 520;
+    } else {
+      // Pantallas de escritorio
+      this.popupWidth = 560;
+      this.popupHeight = 560;
+    }
   }
 
   async getDataGrid(): Promise<void> {
@@ -140,6 +166,7 @@ export class TransportComponent implements OnInit  {
 
   onAdd() {
     console.log(this.popupVisible);
+    this.initializePopupSize();
     this.popupVisible = true;
     this.cdr.detectChanges(); 
     this.configMap();
